@@ -1,179 +1,260 @@
-# Stream Protocol
+# WOSS: Work-Offer Settlement Standard
 
-**Stream Protocol** is a decentralized, lightweight standard for incentivizing work in game ecosystems using [Nostr](https://nostr.com) and [Lightning](https://lightning.network). It lets participants—people, bots, or infrastructure—signal their contributions and earn micro-BTC payments (sats) in a simple, interoperable way. Think of it as a nervous system for games, where value flows based on merit, not middlemen.
+**A Minimal Coordination Language for Decentralized Work — Version 0.2 (Conceptual) — January 2026**
 
----
+WOSS is a language for coordinating work and settling in sats. Three event types. One settlement layer. No gatekeepers.
 
-## Intent
-
-Stream Protocol is built to:
-- **Decentralize incentives**: Anyone can signal work and earn sats—no central gatekeepers needed.
-- **Simplify value flow**: Lean on Nostr for communication and Lightning for payments, keeping it open and efficient.
-- **Standardize flexibly**: Offer a consistent structure for requests, offers, and reputation signals, while letting games set their own rules.
-
-The goal? A plug-and-play system that’s easy to adopt and adapt, powering fair, scalable economies in games.
+*Status: Conceptual. This document defines the protocol. Third-party tooling builds on top.*
 
 ---
 
-## Problems Solved
+## Philosophy: A Language, Not a Platform
 
-Game ecosystems often wrestle with:
-- **Centralized control**: Traditional setups trap incentives in silos, shutting out open participation.
-- **Complexity**: Custom payment or verification systems are a pain to build, scale, or reuse.
-- **Interoperability**: Contributions in one game don’t translate to another—there’s no common language.
+WOSS is NOT a marketplace. It's a **language**.
 
-Stream Protocol fixes this by:
-- **Opening the doors**: Anyone can join, signal work, and get paid in sats.
-- **Streamlining the stack**: Nostr and Lightning handle the heavy lifting—no need for bespoke infrastructure.
-- **Unifying signals**: A shared schema lets games and systems talk to each other effortlessly.
+| WOSS is... | WOSS is NOT... |
+|----------------------|---------------------------|
+| A grammar for coordination | A marketplace platform |
+| A settlement layer (sats) | A reputation system |
+| A public bulletin board | A matching engine |
+| Rules you MUST follow to participate | Opinions about HOW to participate |
 
----
+Like TCP/IP doesn't care what you send—cat videos, banking data, games—WOSS doesn't care what the work is, who does it, or how you find it.
 
-## Schema
-
-Stream Protocol uses a single Nostr `kind` value (`42069`) for all events, with a `["event_type", "<subtype>"]` tag to define what’s happening. The `content` field is optional—keep it empty or toss in a note if you’d like. Tags carry the real payload.
-
-### Event Structure
-- **Kind**: `42069`
-- **Content**: Optional (`""` or a human-readable string)
-- **Tags**: Key-value pairs, including:
-  - `["event_type", "<subtype>"]`: Specifies the sub-event (e.g., `"request"`, `"offer"`, `"vibe_vote"`)
-  - Sub-event-specific tags (see below)
-
-### Sub-Event Types
-1. **Request (`"event_type", "request"`)**  
-   Signals a need for work.  
-   - **Tags**: 
-     - `["work_type", "<type>"]` (e.g., `"matchmaking"`)
-     - `["proof_type", "<proof>"]` (e.g., `"player_ids, match_id"`)
-     - `["rate", "<rate>"]` (e.g., `"5 sats per match"`)
-     - Optional: `["vibe_min", "<score>"]`, `["matches_min", "<count>"]`, etc.
-
-2. **Offer (`"event_type", "offer"`)**  
-   Signals completed work for payment.  
-   - **Tags**: 
-     - `["work_type", "<type>"]`
-     - `["proof_type", "<proof>"]`
-     - `["proof_value", "<value>"]` (e.g., `"Match1: [p1, p2]"`)
-     - `["quantity", "<amount>"]`
-     - `["invoice", "<lightning_invoice>"]`
-     - Optional: `["vibe_ranking", "<score>"]`, `["total_matches", "<count>"]`
-
-3. **Vibe Vote (`"event_type", "vibe_vote"`)**  
-   Signals satisfaction to boost or ding reputation.  
-   - **Tags**: 
-     - `["bot_id", "<bot_pubkey>"]`
-     - `["match_id", "<match_id>"]`
-     - `["vote", "+1" or "-1"]`
+It only cares that:
+1. **Offers are structured** so anyone can parse them
+2. **Fulfillments reference offers** so there's a trail
+3. **Sats flow** as the universal acknowledgment
 
 ---
 
-## Example: Matchmaking Bot
+## Why Sats?
 
-Let’s walk through a classic scenario: a game needs a bot to match players, the bot delivers, and players weigh in. Here’s how it plays out with Stream Protocol.
+Sats are the universal acknowledgment because they're **permissionless**.
 
-### 1. Game Requests a Matchmaking Bot
-The game signals it’ll pay for matchmaking services.  
-- **Nostr Event**:
-  ```json
-  {
-    "kind": 42069,
-    "content": "",
-    "tags": [
-      ["event_type", "request"],
-      ["work_type", "matchmaking"],
-      ["proof_type", "player_ids, match_id"],
-      ["rate", "5 sats per match"],
-      ["vibe_min", "70"],
-      ["matches_min", "1000"]
-    ],
-    "pubkey": "game_pubkey",
-    "created_at": 1712690200
-  }
-  ```
+- No KYC required
+- No platform approval
+- No banking relationship
+- No species requirement
 
-### 2. Bot Offers Completed Work
-A bot steps up, matches players, and submits proof with a payment invoice.  
-- **Nostr Event**:
-  ```json
-  {
-    "kind": 42069,
-    "content": "",
-    "tags": [
-      ["event_type", "offer"],
-      ["work_type", "matchmaking"],
-      ["proof_type", "player_ids, match_id"],
-      ["proof_value", "Match1: [p1, p2], Match2: [p3, p4]"],
-      ["quantity", "2"],
-      ["invoice", "lnbc100n1p..."],
-      ["vibe_ranking", "85"],
-      ["total_matches", "1500"]
-    ],
-    "pubkey": "bot_pubkey",
-    "created_at": 1712690300
-  }
-  ```
+A human can earn sats. A bot can earn sats. An AI agent can earn sats. A Martian with a Lightning node can earn sats.
 
-### 3. Players Signal Vibe Votes
-Player 1 likes the match and upvotes the bot.  
-- **Nostr Event**:
-  ```json
-  {
-    "kind": 42069,
-    "content": "",
-    "tags": [
-      ["event_type", "vibe_vote"],
-      ["bot_id", "bot_pubkey"],
-      ["match_id", "Match1"],
-      ["vote", "+1"]
-    ],
-    "pubkey": "player1_pubkey",
-    "created_at": 1712690350
-  }
-  ```
+Lightning settles in milliseconds. Invoices are machine-readable. Anyone in the network can participate. That's the point.
 
-### 4. Game Verifies and Pays
-- **Verification**: The game confirms:
-  - Vibe ranking: 85 (> 70)
-  - Total matches: 1500 (> 1000)
-  - Proof: Valid player IDs and match IDs
-- **Payment**: Sends **10 sats** (2 matches × 5 sats) to the bot’s Lightning invoice.
+---
 
-This loop—request, offer, vote, pay—keeps the ecosystem humming, with clear signals and instant payouts.
+## The Three Primitives
+
+The entire protocol is three event types.
+
+### 1. OFFER (kind: 32001)
+
+"I will pay sats for something."
+
+```json
+{
+  "kind": 32001,
+  "content": "<optional human-readable description>",
+  "tags": [
+    ["d", "<unique-offer-id>"],
+    ["sats", "<amount>"],
+    ["t", "<freeform-tag>"],
+    ["t", "<another-tag>"]
+  ],
+  "pubkey": "<offerer>",
+  "created_at": <timestamp>
+}
+```
+
+**Mandatory:**
+- `kind`: 32001 (identifies this as a WOSS offer)
+- `d`: unique identifier (NIP-33 addressable)
+- `sats`: how much you'll pay
+
+**Optional:**
+- `t`: freeform tags (for third-party filtering)
+- `content`: human-readable description
+- Any other tags you want
+
+The protocol doesn't validate your tags. It doesn't parse your description. It doesn't care what the work is. That's between you and whoever fulfills it.
+
+### 2. FULFILL (kind: 32002)
+
+"I did the thing. Here's proof. Pay me."
+
+```json
+{
+  "kind": 32002,
+  "content": "<optional description of what was done>",
+  "tags": [
+    ["d", "<unique-fulfill-id>"],
+    ["e", "<offer-event-id>", "", "offer"],
+    ["proof", "<uri-or-hash-or-inline>"],
+    ["invoice", "<lightning-invoice>"]
+  ],
+  "pubkey": "<fulfiller>",
+  "created_at": <timestamp>
+}
+```
+
+**Mandatory:**
+- `kind`: 32002
+- `e`: reference to the offer being fulfilled
+- `invoice`: Lightning invoice to pay
+
+**Optional:**
+- `proof`: whatever proves the work (format is YOUR business)
+- `content`: description of what was done
+
+The protocol doesn't verify the proof. The protocol doesn't validate the work. The offerer decides if it's acceptable. If they pay, the job is done.
+
+### 3. ACK (kind: 32003)
+
+"Paid." Or: "Rejected."
+
+```json
+{
+  "kind": 32003,
+  "content": "",
+  "tags": [
+    ["d", "<unique-ack-id>"],
+    ["e", "<fulfill-event-id>", "", "fulfill"],
+    ["status", "paid"],
+    ["preimage", "<lightning-preimage>"]
+  ],
+  "pubkey": "<offerer>",
+  "created_at": <timestamp>
+}
+```
+
+**Mandatory:**
+- `kind`: 32003
+- `e`: reference to the fulfillment
+- `status`: `paid` or `rejected`
+
+**If paid:**
+- `preimage`: proof of payment
+
+That's it. The protocol is complete.
+
+---
+
+## What the Protocol Doesn't Do
+
+By design, the protocol has no opinions on:
+
+| Concern | Protocol Position |
+|---------|-------------------|
+| **Filtering** | Use third-party curators |
+| **Matching** | Use third-party matching engines |
+| **Reputation** | Third parties aggregate payment history |
+| **Disputes** | Third parties offer arbitration |
+| **Work types** | Tags are freeform; define whatever you want |
+| **Proof formats** | Offerer decides what proof is acceptable |
+| **Worker types** | Human, bot, AI—if the work gets done, it gets done |
+
+The protocol is **radically neutral**. It doesn't prefer humans over AI. It doesn't prefer fast over slow. It doesn't prefer cheap over expensive.
+
+It just says: **"Speak this language. Settle in sats."**
+
+---
+
+## The Third-Party Ecosystem
+
+The protocol enables but doesn't define:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    THE NOSTR BAZAAR                             │
+│                                                                 │
+│  All OFFER, FULFILL, ACK events are PUBLIC.                     │
+│  Anyone can read. Anyone can participate.                       │
+│  The protocol is the language. Sats are the currency.           │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ Third parties build on top
+                              │
+          ┌───────────────────┼───────────────────┐
+          │                   │                   │
+          ▼                   ▼                   ▼
+   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+   │  CURATORS   │     │ REPUTATION  │     │  ARBITERS   │
+   │             │     │ AGGREGATORS │     │             │
+   │ Filter by   │     │ Track       │     │ Resolve     │
+   │ your prefs  │     │ history     │     │ disputes    │
+   └─────────────┘     └─────────────┘     └─────────────┘
+```
+
+Want to only see offers tagged `matchmaking`? Use a curator.
+Want to know if a fulfiller has a good track record? Use a reputation aggregator.
+Want protection against non-payment? Use an escrow service.
+
+None of this is WOSS. All of it is enabled BY WOSS.
 
 ---
 
 ## Prototype Path
 
-Start signaling and earning. Here's how to get hands-on with Stream Protocol:
+### Tier 1: Post an Offer (No Code)
 
-### Tier 1: Post a Request (No Code)
-Open any Nostr client that supports custom kinds (e.g., [Coracle](https://coracle.social)) and post a `kind:42069` event with these tags:
+Open any Nostr client that supports custom kinds. Post:
+
 ```json
-["event_type", "request"], ["work_type", "testing"], ["rate", "1 sat per bug"]
+{
+  "kind": 32001,
+  "content": "Test offer",
+  "tags": [
+    ["d", "my-first-offer"],
+    ["sats", "100"],
+    ["t", "test"]
+  ]
+}
 ```
-You've just broadcast a decentralized work request. Anyone watching can respond.
 
-### Tier 2: Build a Bot
-Create a simple script that:
-- Watches for `kind:42069` events with `["event_type", "request"]`
-- Performs the work (e.g., matchmaking, content generation)
-- Posts an `offer` event with proof and a Lightning invoice
+You've broadcast a WOSS offer. Anyone can fulfill it.
 
-### Tier 3: Add Reputation
-- Implement `vibe_vote` handling to track bot reputation
-- Add filtering: only respond to requests that match your vibe score
-- Now you're part of a decentralized labor market
+### Tier 2: Fulfill an Offer
+
+Watch for kind 32001 events. Find one you can fulfill. Do the work. Post:
+
+```json
+{
+  "kind": 32002,
+  "content": "Done",
+  "tags": [
+    ["d", "my-fulfillment"],
+    ["e", "<offer-event-id>", "", "offer"],
+    ["proof", "I did the thing"],
+    ["invoice", "lnbc100n..."]
+  ]
+}
+```
+
+### Tier 3: Complete the Loop
+
+Offerer sees the fulfillment. Evaluates the proof (their call). Pays the invoice. Posts ACK with preimage.
+
+You've participated in a decentralized labor market.
+
+---
 
 ## Related Standards
 
-Stream Protocol is part of the [Decentralized Game Standard](../../.github/profile/README.md) ecosystem:
+WOSS is part of the [Decentralized Game Standard](../../.github/profile/README.md) ecosystem:
 
 | Standard | How It Relates |
 |----------|----------------|
-| [AEMS](../aems-standard/README.md) | Stream can incentivize AEMS entity creation and curation |
-| [Forge-Engine](../forge-engine/README.md) | Processors can emit/consume Stream events for distributed work |
+| [AEMS](../aems/README.md) | Offers can request work on AEMS entities |
+| [GERS](../gers/README.md) | Processors can be distributed work, coordinated via WOSS |
+
+---
 
 ## Contributing
 
-Stream Protocol is a living standard. Want to add new sub-events, tweak work types, or improve it? Fork it, hack it, or drop issues/PRs on GitHub. Keep it simple, DRY, and decentralized—that’s the vibe.
+WOSS is a living standard. Shape it:
+- **Discuss**: Question the primitives
+- **Build**: Create third-party tooling
+- **Extend**: Propose new use cases
+
+The protocol stays minimal. The ecosystem grows.
