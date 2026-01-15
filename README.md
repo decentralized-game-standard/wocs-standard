@@ -2,6 +2,10 @@
 
 **A Protocol for Permissionless, Instant-Settled Coordination — Conceptual, 2026-01-14**
 
+🏠 **[Overview](https://github.com/decentralized-game-standard)** · 📦 **[AEMS](https://github.com/decentralized-game-standard/aems-standard)** · 🔧 **[GERS](https://github.com/decentralized-game-standard/gers-standard)** · 📜 **[Ludic](https://github.com/decentralized-game-standard/ludic-standard)** · ❓ **[FAQ](https://github.com/decentralized-game-standard/.github/blob/main/profile/FAQ.md)**
+
+---
+
 In the physical world, play organizes itself through voluntary exchange. Friends meet at a park for pickup basketball: one person brings the ball, another stakes $20 for the winners, someone referees for a few bucks. No league approval required. A neighborhood poker game sets its own buy-in and payouts. Local chess clubs run tournaments with entry fees funding prizes. These activities emerge spontaneously—participants signal needs, offer value, settle instantly in cash—without a central authority extracting rent or capable of shutting it down.
 
 Imagine if Nike claimed ownership of all basketballs and banned unauthorized games. Or if a single poker company could forbid home games unless they took a 30% rake. Or if FIDE sent cease-and-desists to casual park chess tournaments. The absurdity highlights how digital games have been architected backward: publishers control the "ball," the "table," the rules, and the payouts. Value flows upward; permission is required for everything.
