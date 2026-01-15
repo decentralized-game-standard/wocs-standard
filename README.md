@@ -1,6 +1,6 @@
 # WOSS: Work-Offer Settlement Standard
 
-**A Protocol for Permissionless, Instant-Settled Coordination — Version 0.2 (Conceptual) — January 2026**
+**A Protocol for Permissionless, Instant-Settled Coordination — Conceptual, 2026-01-14**
 
 In the physical world, play organizes itself through voluntary exchange. Friends meet at a park for pickup basketball: one person brings the ball, another stakes $20 for the winners, someone referees for a few bucks. No league approval required. A neighborhood poker game sets its own buy-in and payouts. Local chess clubs run tournaments with entry fees funding prizes. These activities emerge spontaneously—participants signal needs, offer value, settle instantly in cash—without a central authority extracting rent or capable of shutting it down.
 
