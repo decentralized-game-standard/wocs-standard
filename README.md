@@ -1,8 +1,8 @@
-# WOSS: Work-Offer Settlement Standard
+# WOCS: Work Order Coordination Settlement
 
 **A Protocol for Permissionless, Instant-Settled Coordination — Conceptual, 2026-01-14**
 
-🏠 **[Overview](https://github.com/decentralized-game-standard)** · 📦 **[AEMS](https://github.com/decentralized-game-standard/aems-standard)** · 🔧 **[GERS](https://github.com/decentralized-game-standard/gers-standard)** · ❓ **[FAQ](https://github.com/decentralized-game-standard/.github/blob/main/profile/FAQ.md)**
+🏠 **[Overview](https://github.com/decentralized-game-standard)** · 📦 **[AEMS](https://github.com/decentralized-game-standard/aems-standard)** · 🔧 **[RUNS](https://github.com/decentralized-game-standard/runs-standard)** · ❓ **[FAQ](https://github.com/decentralized-game-standard/.github/blob/main/profile/FAQ.md)**
 
 ---
 
@@ -10,7 +10,7 @@ In the physical world, play organizes itself through voluntary exchange. Friends
 
 Imagine if Nike claimed ownership of all basketballs and banned unauthorized games. Or if a single poker company could forbid home games unless they took a 30% rake. Or if FIDE sent cease-and-desists to casual park chess tournaments. The absurdity highlights how digital games have been architected backward: publishers control the "ball," the "table," the rules, and the payouts. Value flows upward; permission is required for everything.
 
-WOSS restores the natural order. It is a minimal, three-event protocol on Nostr for broadcasting offers of work, claiming completion, and settling in sats via Lightning. No platform. No gatekeepers. No mandatory reputation system. Just structured signals that enable free-market coordination at microscopic cost.
+WOCS restores the natural order. It is a minimal, three-event protocol on Nostr for broadcasting offers of work, claiming completion, and settling in sats via Lightning. No platform. No gatekeepers. No mandatory reputation system. Just structured signals that enable free-market coordination at microscopic cost.
 
 ## The Centralized Coordination Failure in Gaming
 
@@ -34,11 +34,11 @@ Libertarian thinkers have long described how voluntary exchange coordinates disp
 
 Jeff Booth extends this to technology's deflationary force: innovation drives costs toward zero, enabling abundance when money is sound. Inflationary fiat distorts this by forcing growth-at-all-costs; Bitcoin's fixed supply and Lightning's near-zero-fee micropayments align incentives—value flows directly to creators, coordination becomes frictionless.
 
-WOSS operationalizes this for gaming. Lightning makes offering 100 sats for a bug fix or 100,000 sats for a tournament prize as easy as cash in a park game. Nostr broadcasts signals globally without permission.
+WOCS operationalizes this for gaming. Lightning makes offering 100 sats for a bug fix or 100,000 sats for a tournament prize as easy as cash in a park game. Nostr broadcasts signals globally without permission.
 
-## What WOSS Deliberately Excludes
+## What WOCS Deliberately Excludes
 
-WOSS is a coordination language, not a marketplace platform. Like HTTP defines request-response without mandating content, WOSS defines offer-fulfill-ack without mandating commerce:
+WOCS is a coordination language, not a marketplace platform. Like HTTP defines request-response without mandating content, WOCS defines offer-fulfill-ack without mandating commerce:
 
 | Excluded | Why | Where It Belongs |
 |----------|-----|------------------|
@@ -48,11 +48,11 @@ WOSS is a coordination language, not a marketplace platform. Like HTTP defines r
 | **Discovery/matching** | Protocol broadcasts, not recommends | Index services, clients |
 | **Compliance/KYC** | Protocol is neutral, not jurisdictional | Service providers, users |
 
-WOSS enables markets without being a market. Every feature excluded is a business opportunity for third parties—funded, naturally, via WOSS itself.
+WOCS enables markets without being a market. Every feature excluded is a business opportunity for third parties—funded, naturally, via WOCS itself.
 
 ## Technical Specification: Three Primitives
 
-WOSS uses standard Nostr kinds for radical minimalism.
+WOCS uses standard Nostr kinds for radical minimalism.
 
 ### 1. OFFER (kind 32001)
 Broadcast: "I will pay X sats for Y."
@@ -114,7 +114,7 @@ The protocol enforces nothing beyond structure—evaluation, reputation, dispute
 
 - **Server Hosting** — Communities post recurring offers; hosts compete on reliability. Costs drop as Lightning enables micro-sponsorships.
 
-- **Anti-Cheat Services** — Developers offer "integrate my open anti-cheat Processor" via GERS; games pay per deployment or subscription.
+- **Anti-Cheat Services** — Developers offer "integrate my open anti-cheat Processor" via RUNS; games pay per deployment or subscription.
 
 - **Asset Creation** — Curators offer bounties for new AEMS Entities or Manifestations. Artists fulfill with proofs.
 
@@ -124,11 +124,11 @@ The protocol enforces nothing beyond structure—evaluation, reputation, dispute
 
 - **Discovery** — Tags and third-party indexes replace algorithmic gatekeepers.
 
-All integrated: AEMS assets traded via ownership transfers, GERS engines using funded processors, everything settled instantly.
+All integrated: AEMS assets traded via ownership transfers, RUNS engines using funded processors, everything settled instantly.
 
 ## Why This Works Now
 
-Lightning's deflationary economics—fees trending toward zero—makes coordination abundant. Nostr zaps already demonstrate micro-value flow; WOSS adds structure for commitments.
+Lightning's deflationary economics—fees trending toward zero—makes coordination abundant. Nostr zaps already demonstrate micro-value flow; WOCS adds structure for commitments.
 
 Real-world play thrives without corporations. Digital play can too.
 
