@@ -1,61 +1,68 @@
 # WOCS: Work Order Coordination Settlement
 
-**A Protocol for Permissionless, Instant-Settled Coordination — Conceptual, 2026-01-14**
+**A Minimal Protocol for Decentralized Coordination in Games — Conceptual**
 
-🏠 **[Overview](https://github.com/decentralized-game-standard)** · 📦 **[AEMS](https://github.com/decentralized-game-standard/aems-standard)** · 🔧 **[RUNS](https://github.com/decentralized-game-standard/runs-standard)** · ❓ **[FAQ](https://github.com/decentralized-game-standard/.github/blob/main/profile/FAQ.md)**
+🏠 **Overview** · 📦 **AEMS** · 🔧 **RUNS** · ❓ **FAQ**
 
 ---
 
-In the physical world, play organizes itself through voluntary exchange. Friends meet at a park for pickup basketball: one person brings the ball, another stakes $20 for the winners, someone referees for a few bucks. No league approval required. A neighborhood poker game sets its own buy-in and payouts. Local chess clubs run tournaments with entry fees funding prizes. These activities emerge spontaneously—participants signal needs, offer value, settle instantly in cash—without a central authority extracting rent or capable of shutting it down.
+The Decentralized Game Standard aims to make digital games as enduring, open, and composable as the games humanity has played for centuries: rulesets that anyone can implement, artifacts that persist independently, and execution environments that remain neutral.
 
-Imagine if Nike claimed ownership of all basketballs and banned unauthorized games. Or if a single poker company could forbid home games unless they took a 30% rake. Or if FIDE sent cease-and-desists to casual park chess tournaments. The absurdity highlights how digital games have been architected backward: publishers control the "ball," the "table," the rules, and the payouts. Value flows upward; permission is required for everything.
+Digital games introduce requirements that static physical games do not: real-time networking, state synchronization, anti-cheat enforcement, provenance tracking, and persistent server architecture. These functions demand ongoing, coordinated effort to sustain at scale.
 
-WOCS restores the natural order. It is a minimal, three-event protocol on Nostr for broadcasting offers of work, claiming completion, and settling in sats via Lightning. No platform. No gatekeepers. No mandatory reputation system. Just structured signals that enable free-market coordination at microscopic cost.
+Today, these functions are typically provided by centralized entities. This approach solves immediate coordination challenges but introduces fragility (single points of failure), lock-in (proprietary dependencies), and opportunities for rent extraction on the value created by communities and creators.
 
-## The Centralized Coordination Failure in Gaming
+WOCS is a minimal coordination primitive built on Nostr that enables independent actors to collectively provide and maintain these essential functions. It consists of three structured events: broadcast a need with committed settlement (OFFER), prove delivery (FULFILL), and acknowledge completion with instant Lightning payment (ACK).
 
-Central control creates fragility and misaligned incentives.
+No central platform. No mandatory reputation. No built-in escrow. Just open signals that allow strangers to align incentives and sustain shared infrastructure through voluntary, trust-minimized exchange.
 
-- **Modder Exploitation** — Communities extend games for decades, generating immense value with near-zero compensation. Bethesda's repeated attempts at paid mods—Skyrim's 2015 Steam workshop (75% platform cuts, rampant theft concerns, withdrawn after backlash), Fallout 4's Creation Club (curated but widely criticized as overpriced micro-DLC), and 2023–2024 "Creations" rebrand—failed because high rents and top-down curation stifled organic creation.
+## The Coordination Challenge
 
-- **Esports Fragility** — Publishers can kill competitive scenes overnight. Blizzard's 2018 abrupt cancellation of Heroes of the Storm's Global Championship and esports infrastructure—pulling developers, ending tournaments—left players and organizers stranded despite an active community.
+Digital games require active upkeep that physical games largely avoid:
 
-- **Server Hosting Burden** — Community-run servers preserve games (Minecraft's vast private server ecosystem, WoW private realms) but rely on donations or out-of-pocket costs. Hosting fees range from $10–200/month depending on scale; without direct, granular funding mechanisms, many shut down.
+- **Server Architecture** — Persistent, low-latency hosting for synchronized state across players.
+- **Anti-Cheat Systems** — Real-time detection and enforcement to preserve fair play.
+- **Community Provenance Audits** — Verifiable chains of attribution for mods, assets, and rules changes.
+- **Matchmaking & Tournaments** — Scalable organization of competitive play, prize distribution, and event support.
+- **Mod & Asset Development** — Ongoing creation and refinement of new entities, processors, and manifestations.
 
-- **Asset Creation Gatekeeping** — Artists, modelers, and designers depend on platform marketplaces or publisher approval. Commissions happen through Discord or forums with trust issues and payment friction.
+Without neutral mechanisms for strangers to coordinate on these needs, the functions either remain centralized (with the attendant risks and costs) or depend on fragile volunteer effort.
 
-- **Anti-Cheat Monopolies** — Services like Easy Anti-Cheat (owned by Epic) are centralized chokepoints. Outages cascade across titles; integration requires compliance with one company's terms; alternatives are scarce.
+WOCS supplies the lightest possible substrate: global broadcast of needs, verifiable claims of delivery, and instant final settlement. This removes counterparty risk and enables market-driven, resilient maintenance by distributed participants.
 
-These are symptoms of artificial scarcity imposed on abundant digital goods.
+## WOCS Design
 
-## The Free-Market Alternative: Deflationary Coordination
+WOCS provides the minimal layer for emergent coordination:
 
-Libertarian thinkers have long described how voluntary exchange coordinates dispersed knowledge better than central planning. Hayek's "Use of Knowledge in Society" (1945) argues that prices aggregate local, tacit information no planner could collect—creating spontaneous order.
+- Broadcast offers for recurring or one-time needs (server hosting, anti-cheat bounties, provenance audits, tournament pools).
+- Submit fulfillment with proof and a Lightning invoice.
+- Publicly acknowledge settlement (or rejection).
 
-Jeff Booth extends this to technology's deflationary force: innovation drives costs toward zero, enabling abundance when money is sound. Inflationary fiat distorts this by forcing growth-at-all-costs; Bitcoin's fixed supply and Lightning's near-zero-fee micropayments align incentives—value flows directly to creators, coordination becomes frictionless.
+The protocol enforces only event structure and referencing. Instant settlement via Lightning eliminates credit risk. Global reach via Nostr ensures any capable contributor can participate.
 
-WOCS operationalizes this for gaming. Lightning makes offering 100 sats for a bug fix or 100,000 sats for a tournament prize as easy as cash in a park game. Nostr broadcasts signals globally without permission.
+Higher-layer services—discovery indexes, reputation aggregators, dispute mediation, specialized clients—remain open opportunities, themselves coordinatable via WOCS.
 
 ## What WOCS Deliberately Excludes
 
-WOCS is a coordination language, not a marketplace platform. Like HTTP defines request-response without mandating content, WOCS defines offer-fulfill-ack without mandating commerce:
+Like other DGS primitives, WOCS embraces radical minimalism.
 
-| Excluded | Why | Where It Belongs |
-|----------|-----|------------------|
-| **Escrow/custody** | Protocol signals intent, not holds funds | Third-party escrow services |
-| **Reputation systems** | Protocol records history, not scores | Aggregators, community curation |
-| **Dispute resolution** | Protocol enables exit, not arbitration | Voluntary mediation services |
-| **Discovery/matching** | Protocol broadcasts, not recommends | Index services, clients |
-| **Compliance/KYC** | Protocol is neutral, not jurisdictional | Service providers, users |
+| Excluded              | Why                                      | Where It Belongs                  |
+|-----------------------|------------------------------------------|-----------------------------------|
+| Escrow/custody        | Protocol signals intent, not holds funds | Third-party services              |
+| Reputation systems    | Protocol records history, not scores     | Aggregators, community curation   |
+| Dispute resolution    | Protocol enables exit, not arbitration   | Voluntary mediation               |
+| Discovery/matching    | Protocol broadcasts, not recommends      | Index services, clients           |
+| Compliance/KYC        | Protocol is neutral, not jurisdictional  | Service providers as needed       |
 
-WOCS enables markets without being a market. Every feature excluded is a business opportunity for third parties—funded, naturally, via WOCS itself.
+Every exclusion preserves optionality and prevents capture.
 
 ## Technical Specification: Three Primitives
 
-WOCS uses standard Nostr kinds for radical minimalism.
+WOCS uses standard Nostr kinds.
 
 ### 1. OFFER (kind 32001)
-Broadcast: "I will pay X sats for Y."
+
+Broadcast a need with committed settlement amount.
 
 ```json
 {
@@ -71,10 +78,11 @@ Broadcast: "I will pay X sats for Y."
 }
 ```
 
-Mandatory: `d` (addressable), `sats`. Optional freeform tags for filtering.
+Mandatory: `d` (addressable), `sats`. Optional tags for filtering and context.
 
 ### 2. FULFILL (kind 32002)
-Claim: "I did Y; pay me."
+
+Claim delivery.
 
 ```json
 {
@@ -89,10 +97,11 @@ Claim: "I did Y; pay me."
 }
 ```
 
-Mandatory: reference to offer, Lightning invoice.
+Mandatory: reference to offer, invoice.
 
 ### 3. ACK (kind 32003)
-Settle: "Paid" or "Rejected."
+
+Acknowledge settlement.
 
 ```json
 {
@@ -106,32 +115,25 @@ Settle: "Paid" or "Rejected."
 }
 ```
 
-Public ACKs create transparent history.
+Public history emerges naturally on the Nostr graph.
 
-The protocol enforces nothing beyond structure—evaluation, reputation, disputes are market opportunities for third parties.
+## Emergent Capabilities
 
-## Emergent Solutions
+With WOCS layered atop AEMS (persistent artifacts) and RUNS (neutral execution):
 
-- **Server Hosting** — Communities post recurring offers; hosts compete on reliability. Costs drop as Lightning enables micro-sponsorships.
+**Resilient Server Networks** — Competing hosts respond to recurring offers, creating redundancy.  
+**Distributed Anti-Cheat** — Bounties fund open processors; deployments subscribe as needed.  
+**Provenance Audits** — Curators coordinate verification of AEMS entity chains.  
+**Permissionless Tournaments** — Organizers broadcast pools; casters, bracket runners, and streamers fulfill roles.  
+**Asset & Mod Creation** — Direct coordination for new manifestations, processors, or fixes.  
+**Micro-Contributions** — Small-scale funding for bug reports, balance tweaks, or cosmetic work.
 
-- **Anti-Cheat Services** — Developers offer "integrate my open anti-cheat Processor" via RUNS; games pay per deployment or subscription.
-
-- **Asset Creation** — Curators offer bounties for new AEMS Entities or Manifestations. Artists fulfill with proofs.
-
-- **Modding Renaissance** — Direct payment for features, fixes, or cosmetics—no 30–75% cuts.
-
-- **Permissionless Esports** — Organizers offer prize pools; participants fulfill by placing. Streams zap casters in real time.
-
-- **Discovery** — Tags and third-party indexes replace algorithmic gatekeepers.
-
-All integrated: AEMS assets traded via ownership transfers, RUNS engines using funded processors, everything settled instantly.
+All settled instantly, composed openly.
 
 ## Why This Works Now
 
-Lightning's deflationary economics—fees trending toward zero—makes coordination abundant. Nostr zaps already demonstrate micro-value flow; WOCS adds structure for commitments.
+Nostr provides permissionless, global broadcast. Lightning provides instant, low-cost final settlement at any scale. Together, they make trust-minimized coordination among strangers practical for the first time—unlocking resilient, community-sustained digital game foundations.
 
-Real-world play thrives without corporations. Digital play can too.
+Post an offer. Fulfill one. Extend the ecosystem.
 
-Post an offer. Fulfill one. Watch markets emerge.
-
-**MIT License** — Open for extension, implementation, experimentation.
+**MIT License** — Implement, extend, experiment.
